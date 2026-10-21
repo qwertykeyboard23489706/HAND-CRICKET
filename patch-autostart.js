@@ -1,0 +1,14 @@
+const fs=require('fs'); const p='outputs/handcricket.html'; let s=fs.readFileSync(p,'utf8');
+const old="function finishLoading(){if($('#loadingScreen').classList.contains('opening')||$('#loadingScreen').classList.contains('done'))return;clearInterval(loadTimer);setLoadProgress(100);$('#loadingScreen').classList.add('opening');$('#homeScreen').classList.add('entering');musicStart();setTimeout(()=>{$('#loadingScreen').classList.add('done');$('#homeStart').focus()},780)}";
+if(!s.includes(old))throw Error('finishLoading block not found');
+s=s.replace(old,"function finishLoading(){if($('#loadingScreen').classList.contains('opening')||$('#loadingScreen').classList.contains('done'))return;clearInterval(loadTimer);setLoadProgress(100);$('#loadingScreen').classList.add('opening');$('#homeScreen').classList.add('entering');musicStart();setTimeout(()=>{$('#loadingScreen').classList.add('done');$('#homeStart').focus()},780)}");
+const old2="if(loadProgress>=100){$('#loadingScreen').classList.add('ready');$('#enterGame').disabled=false;$('#enterGame').textContent='ENTER THE STADIUM';$('#skipLoading').disabled=true;$('#skipLoading').textContent='READY'}}";
+if(!s.includes(old2))throw Error('progress block not found');
+s=s.replace(old2,"if(loadProgress>=100){$('#loadingScreen').classList.add('ready');$('#enterGame').disabled=false;$('#enterGame').textContent='ENTER THE STADIUM';$('#skipLoading').disabled=true;$('#skipLoading').textContent='READY';tone(784,.12,'triangle',.04);setTimeout(finishLoading,350)}}");
+s=s.replace("$('#enterGame').onclick=finishLoading;$('#skipLoading').onclick=()=>setLoadProgress(100);", "$('#enterGame').onclick=finishLoading;$('#skipLoading').onclick=()=>setLoadProgress(100);");
+// Start a best-effort soundtrack and loading cue immediately. Resume audio when autoplay policy permits.
+s=s.replace("loadTimer=setInterval(()=>setLoadProgress(loadProgress+13,120);", "loadTimer=setInterval(()=>setLoadProgress(loadProgress+13),120);");
+const marker="loadTimer=setInterval(()=>setLoadProgress(loadProgress+13),120);window.addEventListener('load',()=>setLoadProgress(Math.max(loadProgress,76)),{once:true});";
+if(!s.includes(marker))throw Error('load timer marker not found');
+s=s.replace(marker,"loadTimer=setInterval(()=>{setLoadProgress(loadProgress+13);if(loadProgress<100&&loadProgress%26===0)tone(330+loadProgress*2,.055,'sine',.025)},120);window.addEventListener('load',()=>setLoadProgress(Math.max(loadProgress,76)),{once:true});try{ac??=new audio();musicStart();tone(220,.08,'sine',.02)}catch(e){}const resumeAudio=()=>{try{if(ac?.state==='suspended')ac.resume();musicStart()}catch(e){};window.removeEventListener('pointerdown',resumeAudio);window.removeEventListener('keydown',resumeAudio)};window.addEventListener('pointerdown',resumeAudio,{once:true});window.addEventListener('keydown',resumeAudio,{once:true});");
+fs.writeFileSync(p,s);

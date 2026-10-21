@@ -1,0 +1,2 @@
+const fs=require('fs');const p='outputs/handcricket.html';const s=fs.readFileSync(p,'utf8');
+for(const q of ['function classify(hands)','function update(){','function startBall(){','function commit(playerNum)','function finishMatch()','function newInnings(','function musicStart()','<div class="scoreboard"','<div class="game-info"','<aside class="side">','<div class="home-ctas">','const tutorial=','rulesBtn']){let i=s.indexOf(q);console.log('\n---'+q+'---\n'+(i<0?'MISSING':s.slice(i,Math.min(s.length,i+1800))))}

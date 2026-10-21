@@ -1,0 +1,1 @@
+const fs=require('fs');const p='outputs/handcricket.html';let s=fs.readFileSync(p,'utf8');s=s.replace("friendly:'🦊'", "friendly:'🤖'");s=s.replace('#rotatePrompt{position:fixed;inset:0;z-index:150;', '#rotatePrompt{position:fixed;inset:0;z-index:80;');fs.writeFileSync(p,s);const js=s.match(/<script>([\s\S]*?)<\/script>/)[1];fs.writeFileSync('work/handcricket-check.js',js);
